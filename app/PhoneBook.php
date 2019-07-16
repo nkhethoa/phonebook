@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PhoneBook extends Model
 {
-    protected $fillable = ['firstname', 'lastname', 'phonenumber', 'email'];
+    protected $fillable = ['firstname', 'lastname'];
 
    
     /**
@@ -18,7 +18,7 @@ class PhoneBook extends Model
     public function scopeWherePhone($query)
     {
         return $this::join('contacts', 'phone_books.id', '=', 'contacts.phonebookid')
-                ->get();
+                    ->get();
     }
 
     /**
@@ -31,8 +31,8 @@ class PhoneBook extends Model
     public function scopeWhereEdit($query,$id)
     {
         return $this::where('phone_books.id', $id)
-            ->join('contacts', 'contacts.phonebookid','phone_books.id')
-            ->first();
+                    ->join('contacts', 'contacts.phonebookid','phone_books.id')
+                    ->first();
     }
 
 

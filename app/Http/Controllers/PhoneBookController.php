@@ -49,18 +49,18 @@ class PhoneBookController extends Controller
             'email'     =>  'email'
         ]);
 
-        
+        //add new record
         $details = new PhoneBook([
-            'firstname' => $request->get('firstName'),
-            'lastname' => $request->get('lastName'),
+            'firstname'     => $request->get('firstName'),
+            'lastname'      => $request->get('lastName'),
 
         ]);
         $details->save();
 
         $contact = new Contact([
-            'phonebookid' => $details->id,
-            'email' => $request->get('email'),
-            'phonenumber' => $request->get('phone'),
+            'phonebookid'   => $details->id,
+            'email'         => $request->get('email'),
+            'phonenumber'   => $request->get('phone'),
         ]);
         $contact->save();
 
@@ -95,15 +95,17 @@ class PhoneBookController extends Controller
     public function update(Request $request, $id)
     {
        $request->validate([
-            'firstName'=>'required',
-            'phone'=>'required'
+            'firstName' =>'required',
+            'phone'     =>'required'
         ]);
         
+        //save the updates to phone_books table
         $details = PhoneBook::WhereEdit($id);
         $details->firstname     =  $request->get('firstName');
         $details->lastname      = $request->get('lastName');
         $details->save();
 
+        //save the updates to contact table
         $contact = Contact::WhereEditContact($id);
         $contact->email         = $request->get('email');
         $contact->phonenumber   = $request->get('phone');
@@ -121,29 +123,38 @@ class PhoneBookController extends Controller
     public function destroy($id)
     {
         $contact = PhoneBook::find($id);
+
         if ($contact != NULL) {
             $contact->delete();
             return redirect('phonebook')->with('success', 'Contact deleted!');
         }else {
-            return redirect('phonebook')->with('error', 'Cannot delete null!');
+            return redirect('phonebook')->with('error', 'Record not found!');
         }
 
     }
 
+    /**
+     * Search method 
+     * This method will accept the user request based on the search criteria
+     * The method will then return a JSON formatted string VIEW
+     *
+     * @param Request $request
+     * @return void
+     */
     public function search(Request $request)
     {
-
+        //user input
         $searchQry = $request->get('value');
 
         $contacts = DB::table('phone_books')
                     ->join('contacts', 'contacts.phonebookid','phone_books.id')
-                    ->where('firstname', 'like', '%' .$searchQry.'%')
-                    ->orWhere('lastname', 'like', '%' .$searchQry.'%')
-                    ->orWhere('phonenumber', 'like', '%' .$searchQry.'%')
-                    ->orWhere('email', 'like', '%' .$searchQry.'%')
+                    ->where('firstname',        'like', '%' .$searchQry.'%')
+                    ->orWhere('lastname',       'like', '%' .$searchQry.'%')
+                    ->orWhere('phonenumber',    'like', '%' .$searchQry.'%')
+                    ->orWhere('email',          'like', '%' .$searchQry.'%')
                     ->get();
 
-        $returnHTML = view('partials.searchresult',compact('contacts'))->render();
+        $returnHTML = view('book.showcontacts',compact('contacts'))->render();
 
         return response()->json( ['success' => true, 'html'=>$returnHTML] );
 

@@ -1,7 +1,7 @@
-<table class="table table-striped">
+<table class="table table-striped table-dark table-hover">
     <thead>
         <tr>
-          <td>ID</td>
+          {{-- <td>ID</td> --}}
           <td>First Name</td>
           <td>Last Name</td>
           <td>Email</td>
@@ -13,7 +13,7 @@
      
         @foreach($contacts as $contact)
         <tr>
-            <td>{{$contact->id}}</td>
+            {{-- <td>{{$contact->id}}</td> --}}
             <td>{{$contact->firstname}}</td>
             <td>{{$contact->lastname}}</td>
             <td>{{$contact->email}}</td>
@@ -25,13 +25,7 @@
                 </a>
             </td>
             <td>
-                <form action="{{ route('phonebook.destroy', $contact->id)}}" method="post">
-                  @method('DELETE')
-                  @csrf
-                  <button class="btn btn-default" type="submit" title="Delete">
-                    <i class="fa fa-trash text-danger"></i>
-                  </button>
-                </form>
+                @include('book.destroy')
             </td>
         </tr>
         @endforeach

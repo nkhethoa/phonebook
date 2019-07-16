@@ -16,37 +16,28 @@
    <body>
        
         <div class="container">
-            <div class="col-md-6 col-md-offset-6 col-sm-6 col-sm-offset-2">
+                <div class="col-sm-12">
+                    @if(session()->get('success'))
+                        <div class="alert alert-success">
+                        {{ session()->get('success') }}  
+                        </div>
+                    @endif
 
-            <div class="col-sm-12">
-                @if(session()->get('success'))
-                    <div class="alert alert-success">
-                    {{ session()->get('success') }}  
-                    </div>
-                @endif
-
-                @if(session()->get('error'))
-                    <div class="alert alert-danger">
-                    {{ session()->get('error') }}  
-                    </div>
-                @endif
-            </div>
-            <div class="row">
-                <div class="col-10-sm text-center">
-                    @yield('content')
+                    @if(session()->get('error'))
+                        <div class="alert alert-danger">
+                        {{ session()->get('error') }}  
+                        </div>
+                    @endif
                 </div>
-            </div>
-
+                <div class="row">
+                    <div class="display-flex">
+                        @yield('content')
+                    </div>
+                </div>
         </div>
-        </div>
 
-        <script type="text/javascript" 
-           src="{{ mix('/js/app.js') }}" >
-        </script>
-        <script type="text/javascript" 
-           src="{{ asset('/js/book.js') }}" >
-        </script>
-
-       
+        <script type="text/javascript"  src="{{ mix('/js/app.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/book.js') }}"></script>
+        
     </body>
 </html>
