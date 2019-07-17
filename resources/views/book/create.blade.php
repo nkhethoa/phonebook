@@ -1,7 +1,17 @@
 @extends('layout')
 
 @section('content')
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        <br /> 
+    @endif
+    
     <h1>{{ isset($contact->id) ? 'Update Contact' : 'Add Contact' }}</h1>
 
     <form action = "{{ !isset($contact->id) ? route('phonebook.store') : route('phonebook.update',$contact->id) }}" method="post">

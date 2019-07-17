@@ -45,7 +45,7 @@ class PhoneBookController extends Controller
 
         $request->validate([
             'firstName' =>  'required',
-            'phone'     =>  'required',
+            'phone'     =>'required|digits:10',
             'email'     =>  'email'
         ]);
 
@@ -96,7 +96,7 @@ class PhoneBookController extends Controller
     {
        $request->validate([
             'firstName' =>'required',
-            'phone'     =>'required'
+            'phone'     =>'required|digits:10'
         ]);
         
         //save the updates to phone_books table
